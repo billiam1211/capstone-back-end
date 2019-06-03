@@ -1,14 +1,38 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-	first_name: {type: String, required: true},
-	last_name: {type: String, required: true},
-	password: {type: String, required: true}, 
-	email: {type: String, required: true},
-	picture: {data: Buffer, contentType: String},
-})
+	email: {
+		type: String, 
+		required: true, 
+		unique: true
+	},
+	password: {
+		type: String, 
+		required: true
+	}, 
+	listings: [{
+		type: mongoose.Schema.Types.ObjectId, 
+		ref: 'Listing'
+	}]
 
+})
 
 const User = mongoose.model('User', userSchema)
 
 module.exports = User;
+
+
+
+
+
+// Below is documentation on how to set up Geolocation in the schema
+// https://stackoverflow.com/questions/28749471/mongoose-schema-for-geojson-coordinates
+// https://mongoosejs.com/docs/geojson.html
+// 	> location (zip code / city ???)
+
+
+// 	> [Listings]
+
+
+
+// 	> [Offers] // email or back up: notifications 
