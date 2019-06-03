@@ -3,9 +3,42 @@ const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcryptjs');
 
-
-router.get('/login', async (req,res,next) => {
-	console.log('hey, front and back end are connected');
+// User Login Route
+router.post('/login', async (req,res,next) => {
+	console.log('Front and back end are connected');
+    try {
+        const foundUser = await User.findOne({
+            email: req.body.email,
+        });
+        console.log("foundUser: ", foundUser);
+        if (foundUser) {
+            if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+                req.session.email 	= req.body.email;
+                req.session.user 	= foundUser
+                req.session.logged 	= true;
+                req.session.message = 'Login Succesful!';
+                res.json({
+                    status: 200,
+                    data: foundUser,
+                    msg: req.session.message
+                })
+            } else {
+                req.session.message = "Username or password is incorrect.";
+                res.json({
+                    status: 200,
+                    data: req.session.message
+                })
+            }
+        } else {
+            req.session.message = 'User not found, please create an account.';
+            res.json({
+                status: 200,
+                data: req.session.message
+            })
+        }
+    } catch (err) {
+        next(err);
+    }
 })
 
 

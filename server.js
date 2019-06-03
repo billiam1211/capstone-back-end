@@ -54,7 +54,7 @@ app.use(cors(corsOptions));
 // CONTROLLERS
 app.use('/api/v1/user', userController);
 app.use('/api/v1/listing', listingController);
-app.use('/auth', authController);
+app.use('/api/v1/auth', authController);
 
 
 
