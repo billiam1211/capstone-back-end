@@ -22,6 +22,7 @@ router.post('/login', async (req,res,next) => {
                     data: foundUser,
                     msg: req.session.message
                 })
+                console.log(req.session);
             } else {
                 req.session.message = "Username or password is incorrect.";
                 res.json({
@@ -39,6 +40,23 @@ router.post('/login', async (req,res,next) => {
     } catch (err) {
         next(err);
     }
+})
+
+
+router.delete('/logout', async (req,res,next) => {
+	console.log('hit the logout route');
+	if(req.session){
+	    try {
+	      const deletedSession = await req.session.destroy((err) => {
+	      })
+	      res.json({
+	      	status: 200,
+	      	data: 'Logout succesful.'
+	      })
+	    } catch(err) {
+	      next(err)
+	    }
+	  }
 })
 
 
