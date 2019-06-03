@@ -31,6 +31,25 @@ router.post('/register', async (req,res,next) => {
 }) // END OF CREATE/REGISTER USER ROUTE
 
 
+// User show
+router.get('/:id', async (req,res,next) => {
+	console.log('Hit user show route');
+
+	try{
+		const foundUser = User.findById(req.params.id)
+			.populate('listings')
+			.exec((err, foundUser) => {
+				console.log("foundUser => ", foundUser);
+				res.json({
+					status: 200,
+					data: foundUser,
+				})
+			})
+			console.log(foundUser);
+	}catch(err){
+		next(err)
+	}
+}) // End of user show 
 
 
 

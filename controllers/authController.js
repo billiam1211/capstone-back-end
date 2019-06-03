@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcryptjs');
 
+
+
+
 // User Login Route
 router.post('/login', async (req,res,next) => {
 	console.log('Front and back end are connected');
@@ -40,9 +43,14 @@ router.post('/login', async (req,res,next) => {
     } catch (err) {
         next(err);
     }
-})
+}) // End of user login
 
 
+
+
+
+
+// User Logout Route
 router.delete('/logout', async (req,res,next) => {
 	console.log('hit the logout route');
 	if(req.session){
@@ -57,7 +65,7 @@ router.delete('/logout', async (req,res,next) => {
 	      next(err)
 	    }
 	  }
-})
+}) // End of user logout route
 
 
 
