@@ -7,7 +7,7 @@ const fs 		= require('fs');
 const multer 	= require('multer');
 
 
-// CREATE new user
+// CREATE USER ROUTE
 router.post('/register', async (req,res,next) => {
 	console.log('hit the register route!!!');
 	const password = req.body.password
@@ -28,10 +28,13 @@ router.post('/register', async (req,res,next) => {
     } catch(err) {
     	next(err)
     }
-}) // END OF CREATE/REGISTER USER ROUTE
+}) // END OF CREATE USER ROUTE
 
 
-// User show
+
+
+
+// USER SHOW ROUTE
 router.get('/:id', async (req,res,next) => {
 	console.log('Hit user show route');
 
@@ -49,8 +52,38 @@ router.get('/:id', async (req,res,next) => {
 	}catch(err){
 		next(err)
 	}
-}) // End of user show 
+}) // END USER SHOW
 
+
+
+
+// USER UPDATE ROUTE
+router.put('/:id', async (req,res,next) => {
+	console.log('Hit the user update route');
+
+	// add logic to check whether the user is logged in and to
+	// make sure that the logged in user matches the id other the 
+	// user that needs to be updated
+
+	try {
+		const updatedUser = {
+			email: req.body.email,
+			password: req.body.password
+
+		}
+		console.log();
+		const userToBeUpdated = await User.findByIdAndUpdate(req.params.id, updatedUser, {new: true})
+		await userToBeUpdated.save();
+		res.json({
+			status: 200, 
+			data: userToBeUpdated
+		})
+		console.log(userToBeUpdated);
+
+	} catch(err) {
+		next(err)
+	}
+}) // END OF USER UPDATE
 
 
 
