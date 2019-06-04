@@ -7,6 +7,7 @@ const fs 		= require('fs');
 const multer 	= require('multer');
 
 
+
 // CREATE USER ROUTE
 router.post('/register', async (req,res,next) => {
 	console.log('hit the register route!!!');
@@ -60,16 +61,13 @@ router.get('/:id', async (req,res,next) => {
 // USER UPDATE ROUTE
 router.put('/:id', async (req,res,next) => {
 	console.log('Hit the user update route');
-
 	// add logic to check whether the user is logged in and to
 	// make sure that the logged in user matches the id other the 
 	// user that needs to be updated
-
 	try {
 		const updatedUser = {
 			email: req.body.email,
 			password: req.body.password
-
 		}
 		console.log();
 		const userToBeUpdated = await User.findByIdAndUpdate(req.params.id, updatedUser, {new: true})
@@ -79,11 +77,27 @@ router.put('/:id', async (req,res,next) => {
 			data: userToBeUpdated
 		})
 		console.log(userToBeUpdated);
-
 	} catch(err) {
 		next(err)
 	}
 }) // END OF USER UPDATE
+
+
+
+
+// DELETE USER ROUTE
+router.delete('/:id', async (req,res,next) => {
+	console.log('hit the user delete route');
+	// need to add logic for security to make sure the logged in user
+	// is the same as the foundUser
+	try {
+		const foundUser = await User.findById(req.params.id)
+		console.log(foundUser, '<-- User to be deleted');
+		const deleteUser = await User.findByIdAndRemove(req.params.id);
+	} catch(err) {
+		next(err)
+	}
+})
 
 
 

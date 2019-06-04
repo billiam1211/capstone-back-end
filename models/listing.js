@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const listingSchema = new mongoose.Schema({
-	item_name: {
+const listingSchema = new mongoose.Schema({	
+	name: {
 		type: String, 
 		required: true
 	},
@@ -24,7 +24,7 @@ const listingSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	images: {
+	image: {
 		data: Buffer,
 		contentType: String
 	},

@@ -1,14 +1,14 @@
 // Node modules used in the back end server...
-const express 			= require('express');
-const app 				= express();
-const bodyParser 		= require('body-parser');
-const methodOverride 	= require('method-override')
-const cors 				= require('cors');
-const session 			= require('express-session');
-const bcrypt 			= require('bcryptjs');
-const dotenv 			= require('dotenv').config()
-const fs 				= require('fs');
-const multer 			= require('multer');
+const express 				= require('express');
+const app 					= express();
+const formidableMiddleware  = require('express-formidable');const bodyParser 			= require('body-parser');
+const methodOverride 		= require('method-override')
+const cors 					= require('cors');
+const session 				= require('express-session');
+const bcrypt 				= require('bcryptjs');
+const dotenv 				= require('dotenv').config()
+const fs 					= require('fs');
+const multer 				= require('multer');
 
 
 
@@ -31,6 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(formidableMiddleware())
 app.use(session({
     secret: 'chuck norris',
     resave: false,
