@@ -1,7 +1,8 @@
 // Node modules used in the back end server...
 const express 				= require('express');
 const app 					= express();
-const formidableMiddleware  = require('express-formidable');const bodyParser 			= require('body-parser');
+// const formidableMiddleware  = require('express-formidable');
+const bodyParser 			= require('body-parser');
 const methodOverride 		= require('method-override')
 const cors 					= require('cors');
 const session 				= require('express-session');
@@ -27,11 +28,11 @@ const listingController		= require('./controllers/listingController');
 // MIDDLEWARE
 app.use(methodOverride('_method'));
 app.use(express.static('public'))
+// app.use('/api/v1/listing/new', formidableMiddleware())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(formidableMiddleware())
 app.use(session({
     secret: 'chuck norris',
     resave: false,

@@ -1,58 +1,67 @@
 const express 	= require('express');
 const router 	= express.Router();
 const bcrypt 	= require('bcryptjs');
+const session 	= require('express-session');
 const User 		= require('../models/user.js');
 const Listing 	= require('../models/listing.js')
 const fs 		= require('fs');
 const multer 	= require('multer');
-const formidableMiddleware = require('express-formidable');
+// const formidableMiddleware = require('express-formidable');
 
-
-// CREATE or REGISTER new listing 
-router.post('/new', async  (req,res,next) => {
-	console.log('hit the create listing route!!!');
-	res.send("Image sent successfully")
-	// req.files is where all the information about the photo 
-	// that we are trying to upload is being stored
-	console.log("");
-	console.log("");
-	console.log("req.files.image.name: ", req.files.image.name);
-	// find the current user that is logged in to catpure their id
-    // const foundUser = await User.findById(req.session.userDbId);
-    // console.log(foundUser, '<-- <-- <-- <-- found user is the user that is currently logged in');
-    // set up the listing entry based on the req.body and the logged in user's id
-
-
-	// const listingEntry = {};
- 	// listingEntry.name 		= req.body.name;
-	// listingEntry.category 	= req.body.category;
-	// listingEntry.price 		= req.body.price;
-	// listingEntry.quantity 	= req.body.quantity;
-	// listingEntry.sellerId	= foundUser.userDbId
-
-
-    // MULTER SECTION BELOW
-    // listingEntry.image 		= []// get multi-part form data into React State
+// This sets up photo storage for Multer
+const storage = multer.diskStorage({
+    destination: function(req,file, cb){
+        cb(null, './client/uploads')
+    },
+    filename: function(req,file, cb){
+        cb(null, file.fieldname+'-'+Date.now())
+    }
+})
+const upload = multer({storage: storage})
 
 
 
-    // foundUser.photos.push(createdListing);
-    // foundUser.save((err, savedUser) => {
-    // 	message: 'listing created'
-    // 	console.log(savedUser);
-    // })
 
-	try { 
+// CREATE LISTING ROUTE
+router.post('/new', upload.single('img'), async (req,res,next) => {
+	try{
 
-		// const createdListing = await Listing.create(listingEntry)
+        const img = await fs.readFileSync(req.file.path);
+
+        const finalImg = {
+            contentType: req.file.mimeType,
+            data: img
+        };
+
+		const listingEntry = {};
+		listingEntry.name 		= req.body.name;
+		listingEntry.category 	= req.body.category;
+		listingEntry.price 		= req.body.price;
+		listingEntry.quantity 	= req.body.quantity;
+		listingEntry.sellerId	= req.session.userId 
+		listingEntry.image 		= finalImg
+
+
+	    // push the listing we just created into the listings array of the foundUser
+    	const foundUser = User.findById(req.session.userId)
+    	// console.log('here is the found user ', foundUser);
+
+
+		const createdListing = await Listing.create(listingEntry)
+
+	    foundUser.listings.push(createdListing);
+	    foundUser.save((err, savedUser) => {
+	    	message: 'listing created'
+	    })
+
+        res.json({
+            status: 200,
+            data: "File uploaded successfully"
+        })
 
 	}catch(err){
-		next(err)
+	console.log(err);
 	}
-
-
-
-
 })
 
 

@@ -1,6 +1,7 @@
 const express 	= require('express');
 const router 	= express.Router();
 const bcrypt 	= require('bcryptjs');
+const session 	= require('express-session');
 const User 		= require('../models/user.js');
 const Listing 	= require('../models/listing.js');
 const fs 		= require('fs');
@@ -18,14 +19,16 @@ router.post('/register', async (req,res,next) => {
     userDbEntry.password = passwordHash;
     try {
     	const createdUser = await User.create(userDbEntry)
-    	req.session.logged = true;
-    	req.session.userDbId = createdUser._id;
-    	await createdUser.save();
-    	res.json({
-    		status: 200,
-    		data: createdUser
-    	})
-    	console.log(createdUser);
+    	if(createdUser){
+	    	req.session.logged = true;
+	    	req.session.userDbId = createdUser._id;
+	    	await createdUser.save();
+	    	res.json({
+	    		status: 200,
+	    		data: createdUser
+	    	})
+	    	console.log(createdUser);
+    	}
     } catch(err) {
     	next(err)
     }

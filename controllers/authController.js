@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 
 
 
+
 // User Login Route
 router.post('/login', async (req,res,next) => {
 	console.log('Front and back end are connected');
@@ -17,7 +18,7 @@ router.post('/login', async (req,res,next) => {
         if (foundUser) {
             if (bcrypt.compareSync(req.body.password, foundUser.password)) {
                 req.session.email 	= req.body.email;
-                req.session.user 	= foundUser
+                req.session.userId 	= foundUser._id;
                 req.session.logged 	= true;
                 req.session.message = 'Login Succesful!';
                 res.json({

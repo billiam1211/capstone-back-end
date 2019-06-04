@@ -3,34 +3,34 @@ const mongoose = require('mongoose');
 const listingSchema = new mongoose.Schema({	
 	name: {
 		type: String, 
-		required: true
+		required: false
 	},
 	category: {
 		type: String,
 		enum : ['apparel', 'decorations', 'ceremony', 'reception', 'favors', 'other'],
 		default: 'other',
-		required: true
+		required: false
 	},
 	price: {
 		type: String, 
-		required: true
+		required: false
 	}, 
 	quantity: {
 		type: Number, 
-		required: true,
+		required: false,
 		default: 1
 	},
 	description: {
 		type: String,
-		required: true
+		required: false
 	},
-	image: {
+	img: {
 		data: Buffer,
 		contentType: String
 	},
 	sellerId: {
 		type: String, 
-		required: true
+		required: false
 	}
 
 })
