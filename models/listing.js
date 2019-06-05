@@ -7,7 +7,7 @@ const listingSchema = new mongoose.Schema({
 	},
 	category: {
 		type: String,
-		enum : ['apparel', 'decorations', 'ceremony', 'reception', 'favors', 'other'],
+		enum : ['apparel', 'decorations', 'ceremony', 'reception', 'partyfavors', 'other'],
 		default: 'other',
 		required: false
 	},

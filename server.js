@@ -1,7 +1,6 @@
 // Node modules used in the back end server...
 const express 				= require('express');
 const app 					= express();
-// const formidableMiddleware  = require('express-formidable');
 const bodyParser 			= require('body-parser');
 const methodOverride 		= require('method-override')
 const cors 					= require('cors');
@@ -25,10 +24,10 @@ const authController 		= require('./controllers/authController');
 const listingController		= require('./controllers/listingController');
 
 
+
 // MIDDLEWARE
 app.use(methodOverride('_method'));
 app.use(express.static('public'))
-// app.use('/api/v1/listing/new', formidableMiddleware())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -41,8 +40,6 @@ app.use(session({
 
 
 
-
-
 // configure the CORS options...
 const corsOptions = {
     origin: process.env.FRONTEND_URL,
@@ -51,6 +48,7 @@ const corsOptions = {
 }
 // use the configured CORS options
 app.use(cors(corsOptions));
+
 
 
 // CONTROLLERS

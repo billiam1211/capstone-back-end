@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const User = require('../models/user.js');
-const bcrypt = require('bcryptjs');
-
-
+const User      = require('../models/user.js');
+const Listing   = require('../models/listing.js')
+const express   = require('express');
+const router    = express.Router();
+const bcrypt    = require('bcryptjs');
 
 
 
 // User Login Route
 router.post('/login', async (req,res,next) => {
+    
 	console.log('Front and back end are connected');
     try {
         const foundUser = await User.findOne({
@@ -26,7 +26,7 @@ router.post('/login', async (req,res,next) => {
                     data: foundUser,
                     msg: req.session.message
                 })
-                console.log(req.session);
+                console.log(req.session, '<==<< Here is req.session');
             } else {
                 req.session.message = "Username or password is incorrect.";
                 res.json({

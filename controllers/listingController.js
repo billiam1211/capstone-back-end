@@ -1,9 +1,8 @@
 const express 	= require('express');
 const router 	= express.Router();
-const bcrypt 	= require('bcryptjs');
-const session 	= require('express-session');
 const User 		= require('../models/user.js');
 const Listing 	= require('../models/listing.js')
+const bcrypt 	= require('bcryptjs');
 const fs 		= require('fs');
 const multer 	= require('multer');
 // const formidableMiddleware = require('express-formidable');
@@ -21,9 +20,23 @@ const upload = multer({storage: storage})
 
 
 
+  ///++++++++++++++++///
+///+++++  ROUTES +++++///
+ ///++++++++++++++///
+router.get('/new', async (req,res,next) => {
+	console.log('=========================');
+	console.log(req.session, 'GET request session from /new');
+	console.log('=========================');
+	res.json({
+		status: 200
+	})
+
+})
+
 
 // CREATE LISTING ROUTE
-router.post('/new', upload.single('img'), async (req,res,next) => {
+router.post('/new', upload.single('image'), async (req,res,next) => {
+
 	try{
 
         const img = await fs.readFileSync(req.file.path);
@@ -33,26 +46,28 @@ router.post('/new', upload.single('img'), async (req,res,next) => {
             data: img
         };
 
+        // console.log(finalImg);
+
 		const listingEntry = {};
-		listingEntry.name 		= req.body.name;
-		listingEntry.category 	= req.body.category;
-		listingEntry.price 		= req.body.price;
-		listingEntry.quantity 	= req.body.quantity;
-		listingEntry.sellerId	= req.session.userId 
-		listingEntry.image 		= finalImg
+		listingEntry.name 		 = req.body.name;
+		listingEntry.category 	 = req.body.category;
+		listingEntry.price 		 = req.body.price;
+		listingEntry.description = req.body.description;
+		listingEntry.quantity 	 = req.body.quantity;
+		listingEntry.sellerId	 = req.session.userId 
+		listingEntry.image 		 = finalImg
 
 
-	    // push the listing we just created into the listings array of the foundUser
-    	const foundUser = User.findById(req.session.userId)
-    	// console.log('here is the found user ', foundUser);
+		// Store the userId
+		const loggedUserId = req.session.userId
 
 
+	    // Push the listing we just created into the listings array of the foundUser
+    	const foundUser = await User.findById(loggedUserId)
 		const createdListing = await Listing.create(listingEntry)
-
-	    foundUser.listings.push(createdListing);
-	    foundUser.save((err, savedUser) => {
-	    	message: 'listing created'
-	    })
+	    await foundUser.listings.push(createdListing);
+	    await foundUser.save()
+	    console.log("foundUser with new listing in their array", foundUser);
 
         res.json({
             status: 200,
@@ -60,7 +75,7 @@ router.post('/new', upload.single('img'), async (req,res,next) => {
         })
 
 	}catch(err){
-	console.log(err);
+		next(err)
 	}
 })
 
