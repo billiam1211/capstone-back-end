@@ -8,8 +8,9 @@ const fs 		= require('fs');
 const multer 	= require('multer');
 
 
-
-// CREATE USER ROUTE
+/////////////////////////
+//// CREATE USER ROUTE///
+/////////////////////////
 router.post('/register', async (req,res,next) => {
 	console.log('hit the register route!!!');
 	const password = req.body.password
@@ -25,7 +26,8 @@ router.post('/register', async (req,res,next) => {
 	    	await createdUser.save();
 	    	res.json({
 	    		status: 200,
-	    		data: createdUser
+	    		data: createdUser,
+	    		msg: "Account Created"
 	    	})
 	    	console.log(createdUser);
     	}
@@ -49,7 +51,7 @@ router.get('/:id', async (req,res,next) => {
 				console.log("foundUser => ", foundUser);
 				res.json({
 					status: 200,
-					data: foundUser,
+					data: foundUser
 				})
 			})
 			console.log(foundUser);
@@ -105,18 +107,3 @@ router.delete('/:id', async (req,res,next) => {
 
 
 module.exports = router;
-
-
-// password: {
-// 	type: String, 
-// 	required: true
-// }, 
-// email: {
-// 	type: String, 
-// 	required: true, 
-// 	unique: true
-// },
-// listings: [{
-// 	type: mongoose.Schema.Types.ObjectId, 
-// 	ref: 'Listing'
-// }]

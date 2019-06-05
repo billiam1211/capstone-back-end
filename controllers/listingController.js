@@ -33,8 +33,9 @@ router.get('/new', async (req,res,next) => {
 
 })
 
-
-// CREATE LISTING ROUTE
+/////////////////////////
+// CREATE LISTING ROUTE//
+/////////////////////////
 router.post('/new', upload.single('image'), async (req,res,next) => {
 
 	try{
@@ -67,12 +68,15 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 		const createdListing = await Listing.create(listingEntry)
 	    await foundUser.listings.push(createdListing);
 	    await foundUser.save()
-	    console.log("foundUser with new listing in their array", foundUser);
+	    console.log('======================');
+	    console.log("foundUser: ", foundUser);
+	    console.log('======================');
 
         res.json({
             status: 200,
             data: "File uploaded successfully"
         })
+
 
 	}catch(err){
 		next(err)
