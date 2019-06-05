@@ -83,13 +83,24 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 })
 
 
-/////////////////////////
-/// GET LISTING ROUTE ///
-/////////////////////////
+// //////////////////////////////
+// /// GET LISTING PICS ROUTE ///
+// //////////////////////////////
 
-router.get('/index', async (req,res,next) => {
+// router.get('/photo', async (req,res,next) => {
+//     try{
 
-})
+//         const foundUser = await User.findById(req.session.userId);
+//         console.log(foundUser.listings);
+
+//         res.set('Content-Type', foundUser.listings.img.contentType)
+//         res.send(foundUser.listings.img.data);
+
+
+//     }catch(err){
+//         next(err)
+//     }
+// })
 
 
 
