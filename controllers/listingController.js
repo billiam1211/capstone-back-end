@@ -30,7 +30,6 @@ router.get('/new', async (req,res,next) => {
 	res.json({
 		status: 200
 	})
-
 })
 
 /////////////////////////
@@ -47,7 +46,7 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
             data: img
         };
 
-        // console.log(finalImg);
+        console.log(finalImg);
 
 		const listingEntry = {};
 		listingEntry.name 		 = req.body.name;
@@ -56,7 +55,7 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 		listingEntry.description = req.body.description;
 		listingEntry.quantity 	 = req.body.quantity;
 		listingEntry.sellerId	 = req.session.userId 
-		listingEntry.image 		 = finalImg
+		listingEntry.img		 = finalImg
 
 
 		// Store the userId
@@ -83,6 +82,14 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 	}
 })
 
+
+/////////////////////////
+/// GET LISTING ROUTE ///
+/////////////////////////
+
+router.get('/index', async (req,res,next) => {
+
+})
 
 
 
