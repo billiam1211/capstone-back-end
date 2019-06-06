@@ -8,7 +8,6 @@ const bcrypt    = require('bcryptjs');
 
 // User Login Route
 router.post('/login', async (req,res,next) => {
-    
 	console.log('Front and back end are connected');
     try {
         const foundUser = await User.findOne({
@@ -28,17 +27,17 @@ router.post('/login', async (req,res,next) => {
                 })
                 console.log(req.session, '<==<< Here is req.session');
             } else {
-                req.session.message = "Username or password is incorrect.";
+                req.session.message = "Username or password is incorrect";
                 res.json({
-                    status: 200,
-                    data: req.session.message
+                    status: 401,
+                    msg: req.session.message
                 })
             }
         } else {
             req.session.message = 'User not found, please create an account.';
             res.json({
                 status: 200,
-                data: req.session.message
+                msg: req.session.message
             })
         }
     } catch (err) {
