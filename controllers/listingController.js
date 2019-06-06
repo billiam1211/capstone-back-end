@@ -38,7 +38,6 @@ router.get('/new', async (req,res,next) => {
 router.post('/new', upload.single('image'), async (req,res,next) => {
 
 	try{
-
         const img = await fs.readFileSync(req.file.path);
 
         const finalImg = {
@@ -78,6 +77,26 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 
 
 	}catch(err){
+		next(err)
+	}
+})
+
+//////////////////////
+// DELETE USER ROUTE//
+//////////////////////
+router.delete('/:id', async (req,res,next) => {
+	console.log('hit the listing delete route');
+	// need to add logic for security to make sure the logged in user
+	// is the same as the foundUser
+	try {
+		
+		const deleteListing = await Listing.findByIdAndRemove(req.params.id);
+		res.json({
+			status:200,
+			data: "Deleted listing successfully"
+		})
+
+	} catch(err) {
 		next(err)
 	}
 })
