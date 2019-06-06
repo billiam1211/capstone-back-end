@@ -81,6 +81,56 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 	}
 })
 
+
+
+
+/////////////////////////
+// UPDATE LISTING ROUTE//
+/////////////////////////
+router.put('/:id', upload.single('image'), async (req,res,next) => {
+	console.log('hit the listing update route');
+	try{
+        const img = await fs.readFileSync(req.file.path);
+        const finalImg = {
+            contentType: req.file.mimeType,
+            data: img
+        };
+        console.log(finalImg);
+		const listingEntry = {};
+		listingEntry.name 		 = req.body.name;
+		listingEntry.category 	 = req.body.category;
+		listingEntry.price 		 = req.body.price;
+		listingEntry.description = req.body.description;
+		listingEntry.quantity 	 = req.body.quantity;
+		listingEntry.sellerId	 = req.session.userId 
+		listingEntry.img		 = finalImg
+
+
+		// Store the userId
+		const loggedUserId = req.session.userId
+
+
+	    // Push the listing we just created into the listings array of the foundUser
+		const listingToBeUpdated = await Listing.findByIdAndUpdate(req.params.id, listingEntry, {new: true})
+		await listingToBeUpdated.save();
+		res.json({
+			status: 200, 
+			data: listingToBeUpdated,
+			msg: "Listing updated"
+		})
+
+
+	}catch(err){
+		next(err)
+	}
+})
+
+
+
+
+
+
+
 //////////////////////
 // DELETE USER ROUTE//
 //////////////////////
@@ -89,7 +139,7 @@ router.delete('/:id', async (req,res,next) => {
 	// need to add logic for security to make sure the logged in user
 	// is the same as the foundUser
 	try {
-		
+
 		const deleteListing = await Listing.findByIdAndRemove(req.params.id);
 		res.json({
 			status:200,
