@@ -13,27 +13,37 @@ const multer 	= require('multer');
 /////////////////////////
 router.post('/register', async (req,res,next) => {
 	console.log('hit the register route!!!');
-	const password = req.body.password
-	const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-	const userDbEntry = {};
-    userDbEntry.email = req.body.email;
-    userDbEntry.password = passwordHash;
-    try {
-    	const createdUser = await User.create(userDbEntry)
-    	if(createdUser){
-	    	req.session.logged = true;
-	    	req.session.userDbId = createdUser._id;
-	    	await createdUser.save();
-	    	res.json({
-	    		status: 200,
-	    		data: createdUser,
-	    		msg: "Account Created"
-	    	})
-	    	console.log(createdUser);
-    	}
-    } catch(err) {
-    	next(err)
-    }
+
+
+	if(req.body.password != req.body.confirmPassword){
+		res.json({
+			status: 200,
+			msg: "Please check your password"
+		})
+	} else{
+
+		const password = req.body.password
+		const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+		const userDbEntry = {};
+	    userDbEntry.email = req.body.email;
+	    userDbEntry.password = passwordHash;
+	    try {
+	    	const createdUser = await User.create(userDbEntry)
+	    	if(createdUser){
+		    	req.session.logged = true;
+		    	req.session.userDbId = createdUser._id;
+		    	await createdUser.save();
+		    	res.json({
+		    		status: 200,
+		    		data: createdUser,
+		    		msg: "Account Created!"
+		    	})
+		    	console.log(createdUser);
+	    	}
+	    } catch(err) {
+	    	next(err)
+	    }
+	}
 }) // END OF CREATE USER ROUTE
 
 
