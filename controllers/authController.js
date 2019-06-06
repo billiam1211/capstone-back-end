@@ -57,11 +57,12 @@ router.delete('/logout', async (req,res,next) => {
 	if(req.session){
 	    try {
 	      const deletedSession = await req.session.destroy((err) => {
+    	      res.json({
+    	      	status: 200,
+    	      	data: 'You have successfully logged out.'
+    	      })
 	      })
-	      res.json({
-	      	status: 200,
-	      	data: 'Logout succesful.'
-	      })
+        console.log(deletedSession);
 	    } catch(err) {
 	      next(err)
 	    }

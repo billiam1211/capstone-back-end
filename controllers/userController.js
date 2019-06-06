@@ -18,7 +18,7 @@ router.post('/register', async (req,res,next) => {
 	if(req.body.password != req.body.confirmPassword){
 		res.json({
 			status: 200,
-			msg: "Please check your password"
+			msg: "Incorrect password"
 		})
 	} else{
 
@@ -27,6 +27,7 @@ router.post('/register', async (req,res,next) => {
 		const userDbEntry = {};
 	    userDbEntry.email = req.body.email;
 	    userDbEntry.password = passwordHash;
+	    userDbEntry.confirmPassword = req.body.confirmPassword
 	    try {
 	    	const createdUser = await User.create(userDbEntry)
 	    	if(createdUser){
@@ -82,7 +83,8 @@ router.put('/:id', async (req,res,next) => {
 	try {
 		const updatedUser = {
 			email: req.body.email,
-			password: req.body.password
+			password: req.body.password,
+			confirmPassword: req.body.confirmPassword
 		}
 		console.log();
 		const userToBeUpdated = await User.findByIdAndUpdate(req.params.id, updatedUser, {new: true})
@@ -109,6 +111,10 @@ router.delete('/:id', async (req,res,next) => {
 		const foundUser = await User.findById(req.params.id)
 		console.log(foundUser, '<-- User to be deleted');
 		const deleteUser = await User.findByIdAndRemove(req.params.id);
+		res.json({
+			status:200,
+			data: foundUser
+		})
 	} catch(err) {
 		next(err)
 	}
