@@ -3,6 +3,7 @@ const Listing   = require('../models/listing.js')
 const express   = require('express');
 const router    = express.Router();
 const bcrypt    = require('bcryptjs');
+const dotenv        = require('dotenv').config()
 
 
 

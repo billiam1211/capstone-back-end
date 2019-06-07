@@ -5,6 +5,8 @@ const Listing 	= require('../models/listing.js')
 const bcrypt 	= require('bcryptjs');
 const fs 		= require('fs');
 const multer 	= require('multer');
+const dotenv 		= require('dotenv').config()
+
 // const formidableMiddleware = require('express-formidable');
 
 // This sets up photo storage for Multer
@@ -20,9 +22,9 @@ const upload = multer({storage: storage})
 
 
 
-  ///++++++++++++++++///
+/////++++++++++++++++////
 ///+++++  ROUTES +++++///
- ///++++++++++++++///
+/////++++++++++++++//////
 router.get('/new', async (req,res,next) => {
 	console.log('=========================');
 	console.log(req.session, 'GET request session from /new');
@@ -31,6 +33,8 @@ router.get('/new', async (req,res,next) => {
 		status: 200
 	})
 })
+
+
 
 /////////////////////////
 // CREATE LISTING ROUTE//

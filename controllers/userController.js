@@ -6,6 +6,7 @@ const User 		= require('../models/user.js');
 const Listing 	= require('../models/listing.js');
 const fs 		= require('fs');
 const multer 	= require('multer');
+const dotenv 		= require('dotenv').config()
 
 
 /////////////////////////
