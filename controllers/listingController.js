@@ -127,6 +127,22 @@ router.put('/:id', upload.single('image'), async (req,res,next) => {
 
 
 
+/////////////////
+// INDEX ROUTE //
+/////////////////
+router.get('/index', async (req, res, next) => {
+	console.log('hit the index route');
+	try{
+	    const foundListings = await Listing.find()
+	    res.json({
+	    	status: 200,
+	    	data: foundListings,
+	    	msg: "Search Complete"
+	    })
+	} catch(err){
+		next(err)
+	}
+})
 
 
 
