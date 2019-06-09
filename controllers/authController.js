@@ -12,7 +12,7 @@ router.post('/login', async (req,res,next) => {
 	console.log('Front and back end are connected');
     try {
         const foundUser = await User.findOne({
-            email: req.body.email,
+            email: req.body.email
         });
         console.log("foundUser: ", foundUser);
         if (foundUser) {

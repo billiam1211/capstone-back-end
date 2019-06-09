@@ -21,6 +21,7 @@ router.post('/register', async (req,res,next) => {
 			status: 200,
 			msg: "Incorrect password"
 		})
+
 	} else{
 
 		const password = req.body.password
@@ -30,19 +31,29 @@ router.post('/register', async (req,res,next) => {
 	    userDbEntry.password = passwordHash;
 	    userDbEntry.confirmPassword = req.body.confirmPassword
 	    try {
-	    	const createdUser = await User.create(userDbEntry)
-	    	if(createdUser){
-		    	req.session.logged = true;
-		    	req.session.userId = createdUser._id;
-                req.session.email 	= req.body.email;
-		    	await createdUser.save();
-		    	res.json({
-		    		status: 200,
-		    		data: createdUser,
-		    		msg: "Account Created!"
-		    	})
-		    	console.log(createdUser);
-	    	}
+    		const checkDb = await User.find({email: req.body.email})
+    		if(checkDb.length == 0){
+    			console.log('make a user');
+		    	const createdUser = await User.create(userDbEntry)
+		    	if(createdUser){
+			    	req.session.logged = true;
+			    	req.session.userId = createdUser._id;
+	                req.session.email 	= req.body.email;
+			    	await createdUser.save();
+			    	res.json({
+			    		status: 200,
+			    		data: createdUser,
+			    		msg: "Account Created!"
+			    	}) 
+			    	console.log(createdUser);
+		    	}
+    		} else {
+    			console.log('user exists');
+    			res.json({
+    				status: 409,
+    				msg: 'Email is already in use'
+    			})
+    		}
 	    } catch(err) {
 	    	next(err)
 	    }
@@ -83,19 +94,26 @@ router.put('/:id', async (req,res,next) => {
 	// make sure that the logged in user matches the id other the 
 	// user that needs to be updated
 	try {
+
+		const password = req.body.password
+		const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+
 		const updatedUser = {
 			email: req.body.email,
-			password: req.body.password,
-			confirmPassword: req.body.confirmPassword
+			password: passwordHash
 		}
-		console.log();
+
+		console.log(updatedUser);
+
 		const userToBeUpdated = await User.findByIdAndUpdate(req.params.id, updatedUser, {new: true})
 		await userToBeUpdated.save();
 		res.json({
 			status: 200, 
 			data: userToBeUpdated
 		})
+
 		console.log(userToBeUpdated);
+
 	} catch(err) {
 		next(err)
 	}
