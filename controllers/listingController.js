@@ -7,8 +7,6 @@ const fs 		= require('fs');
 const multer 	= require('multer');
 const dotenv 		= require('dotenv').config()
 
-// const formidableMiddleware = require('express-formidable');
-
 // This sets up photo storage for Multer
 const storage = multer.diskStorage({
     destination: function(req,file, cb){
@@ -25,6 +23,7 @@ const upload = multer({storage: storage})
 /////++++++++++++++++////
 ///+++++  ROUTES +++++///
 /////++++++++++++++//////
+
 router.get('/new', async (req,res,next) => {
 	console.log('=========================');
 	console.log(req.session, 'GET request session from /new');
@@ -57,7 +56,8 @@ router.post('/new', upload.single('image'), async (req,res,next) => {
 		listingEntry.price 		 = req.body.price;
 		listingEntry.description = req.body.description;
 		listingEntry.quantity 	 = req.body.quantity;
-		listingEntry.sellerId	 = req.session.userId 
+		listingEntry.sellerEmail = req.body.sellerEmail;
+		listingEntry.sellerId	 = req.session.userId;
 		listingEntry.img		 = finalImg
 
 

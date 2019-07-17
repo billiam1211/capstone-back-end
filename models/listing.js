@@ -30,6 +30,10 @@ const listingSchema = new mongoose.Schema({
 	sellerId: {
 		type: String, 
 		required: false
+	},
+	sellerEmail: {
+		type: String,
+		required: false
 	}
 
 })
@@ -38,19 +42,3 @@ const listingSchema = new mongoose.Schema({
 const Listing = mongoose.model('Listing', listingSchema)
 
 module.exports = Listing;
-
-
-// MULTER => https://medium.com/@alvenw/how-to-store-images-to-mongodb-with-node-js-fb3905c37e6d
-
-
-// Listing
-// 	> ID
-// 	> seller ID
-// 	> Item Name
-// 	> Category
-// 		enum
-// 	> Price
-// 	> Description
-// 	> Quantity
-// 	> images
-// 	> Relationship: belong to a specific user 
